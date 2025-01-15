@@ -18,18 +18,20 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+    content = message.content.lower()
+
     if client.user in message.mentions:
         print("bot mentioned")
         await message.channel.send("Hello you mentioned me")
 
-    if message.content.startswith("hello"):
+    if content.startswith("hello"):
         print("bot recieved hello")
         await message.channel.send("Hello!")
 
-    if message.content.startswith("How are you?"):
+    if content.startswith("How are you?"):
         await message.channel.send("I'm fine and you?")
 
-    if message.content.startswith("I'm fine too"):
+    if content.startswith("I'm fine too"):
         await message.channel.send("Glad to hear that")
 
 bot_key = os.getenv("BOT_KEY")
