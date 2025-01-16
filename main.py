@@ -1,26 +1,29 @@
 import discord
 import os
 from dotenv import load_dotenv
+from discord.ext import commands
 
 load_dotenv()
 
 intents = discord.Intents.default()
+
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix='$', intents=intents)
 
-@client.event
+
+@bot.event
 async def on_ready():
-    print(f'We have logged in as {client.user}')
+    print(f'We have logged in as {bot.user}')
 
-@client.event
+@bot.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == bot.user:
         return
 
     content = message.content.lower()
 
-    if client.user in message.mentions:
+    if bot.user in message.mentions:
         print("bot mentioned")
         await message.channel.send("Hello you mentioned me")
 
@@ -34,6 +37,13 @@ async def on_message(message):
     if content.startswith("I'm fine too"):
         await message.channel.send("Glad to hear that")
 
+    await bot.process_commands(message)
+
+@bot.command()
+async def echo(ctx, *, arg):
+    await ctx.send(f"You said {arg}")
+
+
 bot_key = os.getenv("BOT_KEY")
 
-client.run(bot_key)
+bot.run(bot_key)
