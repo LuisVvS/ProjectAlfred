@@ -1,6 +1,6 @@
 from discord.ext import commands
 from database.DB_connection import connection 
-
+from database.models import create_task, update_task, delete_task, show_task
 
 class TodoCog(commands.Cog):
     def __init__(self,bot):
@@ -10,18 +10,22 @@ class TodoCog(commands.Cog):
     async def echo(self, ctx, *, arg):
         await ctx.send(f"You said {arg}")
 
-    @commands.command()
-
+    @commands.command(name="add")
     async def todo_add(self, ctx,*, arg):
-        cursor = connection().cursor()
+        
+        create_task(arg)
 
-        cursor.execute("INSERT INTO Todo(nome) VALUES(%s)", (arg))
+        await ctx.send(f"added {arg} to the list")
 
-        connection().commit()
+    @commands.command(name="delete")
+    async def todo_delete(self,ctx, *, arg):
+        ...
 
-        await ctx.send("added to the list")
+    @commands.command(name="update")
+    async def todo_update(self, ctx, *, arg):
+        ...
 
-    @commands.command()
+    @commands.command(name="show")
     async def todo_show(self, ctx):
         await ctx.send("------ Lista de tarefas ------")
 
