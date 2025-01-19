@@ -3,12 +3,11 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands
 
-from todo import TodoCog
+from cogs import todo 
 
 
 
 def main():
-
     load_dotenv()
 
     intents = discord.Intents.default()
@@ -20,7 +19,7 @@ def main():
 
     @bot.event
     async def on_ready():
-        await bot.add_cog(TodoCog(bot))
+        await bot.add_cog(todo.TodoCog(bot))
         print(f'We have logged in as {bot.user}')
 
     #@bot.event
