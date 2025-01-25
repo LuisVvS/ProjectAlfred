@@ -15,6 +15,10 @@ class TodoCog(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             #bot will send this message if we dont pass any argument
             await ctx.send("You need do pass arguments after this command")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("You need to pass a valid argument for this command")
+        elif isinstance(error, commands.CommandNotFound):
+            await ctx.send("This command dosen't exits, please type $help for the list of commands")
         else:
             #handle with another errors
             await ctx.send("An error ocurred while running the program")
@@ -37,7 +41,7 @@ class TodoCog(commands.Cog):
             create_task(arg)
             await ctx.send(f"added {arg} to the list")
         except Exception as e:
-            await ctx.send(f"Error occurried: {e}")
+            await ctx.send(f"Error occurried while addind to the list review the inputs")
 
 
 
@@ -48,7 +52,7 @@ class TodoCog(commands.Cog):
             delete_task(arg)
             await ctx.send(f"Task {arg} deleted succesfully")
         except Exception as e:
-            await ctx.send(f"Error occurried: {e}")
+            await ctx.send(f"Error occurried while deleting the task review the inputs")
 
     #change the name of the command to "todo_update" for "update"
     @commands.command(name="update")
@@ -57,10 +61,8 @@ class TodoCog(commands.Cog):
         try:
             update_task(task_id,nome)
             await ctx.send(f"Task number {task_id} updated succesfully")
-        except commands.BadArgument as e:
-            await ctx.send("The arguments are invalid, please review them")
         except Exception as e:
-            await ctx.send(f"Error occurried: {e}")
+            await ctx.send(f"Error occurried while updating the task review the inputs")
 
     #change the name of the command to "todo_show" for "show"
     @commands.command(name="show")
